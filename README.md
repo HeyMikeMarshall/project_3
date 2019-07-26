@@ -11,14 +11,16 @@ This project was born of a previous project, Metro Guru. Metro Guru focused on t
 But this lead to the question of whether I'd be able to build a data capture solution that would allow for an analysis of trends within the WMATA bus system. The live bus position api end point can return more than 900 records of bus positions during peak hours, and the WMATA API documentation states that these bus positions can update once every 7 to 10 seconds. For the purpose of this project, I set a goal to capture 7 days of continuous data. To estimate the requirements for the data caputre, I used approximate peak record volume and padded upwards, with API calls being made every 10 seconds. Doing the math, I needed to prepare a solution that had the potential of capturing **tens of millions** of records, and **hundreds of millions** of data points, with a budget of effectively zero dollars. So I asked myself, "what do I have laying around the house?"
  
 
+
+
 ---
-## Chapter 1: Building The RPi API Recorder
+## Part I: Building The RPi API Recorder
 
 
 In order to capture the data we will need for this project (and there will be a lot of it) we will need to set up a "server" to record the results of API calls to the WMATA end-point. While this would be significantly easier to do with a cloud service such as AWS, my intitial estimates for the resulting size of the database put us in the area of needing a fairly expensive AWS EC2 instance. In the interest of trying to keep this project as-close-to-zero-as-possible, I had to explore other options. I had a number of Raspberry Pi 3 B's in a crate in my closet, and I felt that it could be feasible to set one up as a MongoDB server that could run the API recorder script and capture the data from WMATA. This proved to be somewhat of a challenge in and of itself. A variety of configurations were attempted, including one involving the install of an Ubuntu Server GUI. However, I found that the GUI took far too much of the years-old $35 computer (baseline RAM utilization over 60%). I had to settle for a completely CLI-based solution.
 
 ---
-### Part 0: Preparation
+### Chapter 0: Preparation
 
 Before I got started I was going to need a few things. First, I needed a Micro SD card, luckily I had a 32GB card laying around not being used. Similarly I had a handfull of Raspberry Pi 3 B+'s collecting dust in my closet in "the box with all the cables and stuff" that every IT professional's significant other rolls their eyes at.
 
@@ -35,7 +37,7 @@ This is more of the police report of what happened, rather than a bible on how t
 
 
 ---
-### Part 1: SD Card Prep and OS Install
+### Chapter 1: SD Card Prep and OS Install
 
 
 #### Mac OS X, Disk Utility
@@ -62,7 +64,7 @@ This is more of the police report of what happened, rather than a bible on how t
     At this point you are prompted to set the admin password. Once the password is set, you are logged into to the OS as user 'ubuntu'.
 
 ---
-### Part 2: Networking and System Updates
+### Chapter 2: Networking and System Updates
 
 At this point I ran into a *real fun problem*. I live in an apartment building that is only a few years old, and was pre-wired for Verizon Fios. While gigabit internet is a pretty amazing thing, the design of my apartment is such that the router is located in a telecom box in the hallway closet. When Ubuntu installs, it lacks the modules necessary to properly enable wifi. Since my wife would have had a fit if I were to run cabling through the hallway to the Fios router, I needed to hardwire into my network at least temporarily, but lacked the ability to do so directly. It took an hour or so of cajoling my desktop PC to serve as a temporary wifi bridge, but ultimately I was able to get it connected. Once connected to the internet I was able to apt-get the wifi modules.
 
@@ -100,7 +102,7 @@ My MacBook Pro has 8GB onboard, and seems to run the recorder script and MongoDB
 I'm hoping that this will be enough horsepower to handle a few thousand documents a minute. I guess in a worst case scenario I kinda wanted one of the new 4B models anyway. 
 
 ---
-### Part 3: Install & Configure MongoDB
+### Chapter 3: Install & Configure MongoDB
 
 
 Create a swap, I'm not entirely sure about this, but it sounds like a good idea?
@@ -131,15 +133,22 @@ This bit takes a while as well. But at the end of the day, it takes less time th
 
 
 ---
-### Part 4: Install/Configure Python & Environment
+### Chapter 4: Install/Configure Python & Environment
 
 Here's the part where we start loading the Python environment we need to get things rolling.
 
 
 
 ---
-### Part 5: Testing
+### Chapter 5: Connectivity Testing
 
 
 
 ---
+
+## Part II: Release the ~~Hounds~~ ~~Kraken~~ API Calls!
+
+### Chapter 1: 1-hour Run
+
+### Chapter 2: Rush Hour with Jackie Chan
+
