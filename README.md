@@ -8,7 +8,7 @@ heymikemarshall@gmail.com
 
 This project was born of a previous project, Metro Guru. Metro Guru focused on the visualization of realtime data collected from the Washington Metropolitan Area Transit Authority API. That project relied on just-in-time API calls for data collection, but utilized a NoSQL database (MongoDB) to store data from API calls that were not likely to change. It was able to map up-to-the-minute geographic locations of every active MetroBus within the D.C. metropolitan area.
 
-But this lead to the question of whether I'd be able to build a data capture solution that would allow for an analysis of trends within the WMATA bus system. The live bus position api end point can return more than 900 records of bus positions during peak hours, and the WMATA API documentation states that these bus positions can update once every 7 to 10 seconds. For the purpose of this project, I set a goal to capture 7 days of continuous data. To estimate the requirements for the data caputre, I used approximate peak record volume and padded upwards, with API calls being made every 10 seconds. Doing the math, I needed to prepare a solution that had the potential of capturing **tens of millions** of records, and **hundreds of millions** of data points, with a budget of effectively zero dollars. So I asked myself, what do I have laying around the house?
+But this lead to the question of whether I'd be able to build a data capture solution that would allow for an analysis of trends within the WMATA bus system. The live bus position api end point can return more than 900 records of bus positions during peak hours, and the WMATA API documentation states that these bus positions can update once every 7 to 10 seconds. For the purpose of this project, I set a goal to capture 7 days of continuous data. To estimate the requirements for the data caputre, I used approximate peak record volume and padded upwards, with API calls being made every 10 seconds. Doing the math, I needed to prepare a solution that had the potential of capturing **tens of millions** of records, and **hundreds of millions** of data points, with a budget of effectively zero dollars. So I asked myself, "what do I have laying around the house?"
  
 
 ---
@@ -27,9 +27,9 @@ In the past, I've installed Ubuntu desktop on a few old laptops, and I've messed
 Ubuntu's website is nice enough to host distros preconfigured for the RPi 2 and 3.  
 https://ubuntu.com/download/iot/raspberry-pi-2-3
 
-However, the installation instructions that are linked from that page ended up being a rabbit hole that required a few attempts before I began looking elsewhere for direction. Ultimately, what follows is the culmination of several hours of trial and error, all the Google-Fu I could muster, and occasionally throwing things against the wall to see what sticks.
+However, the installation instructions that are linked from that page ended up being a rabbit hole that required a few attempts before I began looking elsewhere for direction. Ultimately, what follows is the culmination of _hours_ of trial and error, all the Google-Fu I could muster, and occasionally throwing things against the wall to see what sticks.
 
-This is more of the police report of what happened, rather than the bible on how to do this.
+This is more of the police report of what happened, rather than a bible on how to do this.
 
 
 
@@ -89,7 +89,7 @@ Once networked via our method of choice, I was able to ditch being directly logg
 ---
 ### Interlude: A Few Thoughts on Resource Management
 
->_Your scientists were so preoccupied with whether or not they could, they didn’t stop to think if they **should**._
+>_Your scientists were so preoccupied with whether or not they could, they didn’t stop to think if they **should**._  
 ~_Ian Malcolm (Jurassic Park)_
 
 
