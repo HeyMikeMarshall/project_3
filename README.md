@@ -40,10 +40,11 @@ In order to capture the data we will need for this project (and there will be a 
 
 #### Ubuntu CLI
 
-    6. Insert SD card into RPi and boot
-    7. Log in to Ubuntu locally for OS initialization.
-        Username: ubuntu
-        Password: ubuntu
+6. Insert SD card into RPi and boot
+7. Log in to Ubuntu locally for OS initialization.  
+    + Username: ubuntu  
+    + Password: ubuntu
+    
     At this point you are prompted to set the admin password. Once the password is set, you are logged into to the OS as user 'ubuntu'.
 
 ---
