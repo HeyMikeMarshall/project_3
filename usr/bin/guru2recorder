@@ -1,3 +1,5 @@
+#!/usr/bin/env/python3
+
 import requests, json, time, schedule, functools, threading
 from datetime import datetime, timedelta 
 from pymongo import MongoClient
@@ -25,12 +27,10 @@ def run_threaded(job_func):
     job_thread = threading.Thread(target=job_func)
     job_thread.start()
 
-
 @catch_exceptions(cancel_on_failure=False)
 def getBuses():
     response = requests.get(busposurl, params=params).json()
-    client = MongoClient('mongodb://localhost:27017')
-
+    client = MongoClient('mongodb://192.168.1.176:27017')
     db = client['guru_db2']
     collection = db['buspos']
     acqTimeStamp = datetime.now().isoformat()[:-7]
@@ -40,12 +40,11 @@ def getBuses():
     
     client.close()
     print(f"{len(response['BusPositions'])} bus location records collected.")
-
         
 @catch_exceptions(cancel_on_failure=False)
 def getBusIncidents():
     response = requests.get(busincurl, params=params).json()
-    client = MongoClient('mongodb://localhost:27017')
+    client = MongoClient('mongodb://192.168.1.176:27017')
 
     db = client['guru_db2']
     collection = db['businc']
@@ -56,8 +55,7 @@ def getBusIncidents():
     
     client.close()
     print(f"{len(response['BusIncidents'])} bus incident records collected.")
-           
-          
+             
 schedule.every(1).minute.do(run_threaded, getBusIncidents)         
 schedule.every(10).seconds.do(run_threaded, getBuses)
 

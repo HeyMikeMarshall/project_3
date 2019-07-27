@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+until guru2recorder; do
+        echo "Guru Recorder has crashed. Exit code $?. Restarting Guru Recorder..">&2
+        sleep 1
+done

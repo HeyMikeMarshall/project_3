@@ -14,7 +14,7 @@ But this lead to the question of whether I'd be able to build a data capture sol
 
 
 ---
-## Part I: Building The RPi API Recorder
+## Part I: Small Server, Big Data: Building The RPi API Recorder
 
 
 In order to capture the data we will need for this project (and there will be a lot of it) we will need to set up a "server" to record the results of API calls to the WMATA end-point. While this would be significantly easier to do with a cloud service such as AWS, my intitial estimates for the resulting size of the database put us in the area of needing a fairly expensive AWS EC2 instance. In the interest of trying to keep this project as-close-to-zero-as-possible, I had to explore other options. I had a number of Raspberry Pi 3 B's in a crate in my closet, and I felt that it could be feasible to set one up as a MongoDB server that could run the API recorder script and capture the data from WMATA. This proved to be somewhat of a challenge in and of itself. A variety of configurations were attempted, including one involving the install of an Ubuntu Server GUI. However, I found that the GUI took far too much of the years-old $35 computer (baseline RAM utilization over 60%). I had to settle for a completely CLI-based solution.
@@ -137,18 +137,40 @@ This bit takes a while as well. But at the end of the day, it takes less time th
 
 Here's the part where we start loading the Python environment we need to get things rolling.
 
+`$ sudo apt install python3-pip`
 
+`$ sudo apt install python3-venv`
 
 ---
-### Chapter 5: Connectivity Testing
+### Chapter 5: Initial Testing and Resource Monitoring
 
+After all of that, I'm probably 12 hours into this thing now. Blessedly, I can SSH to the server, and having set up the MongoDB service, I'm able to access the instance with MongoDB Compass on my MacBook. I think we're getting close. But with my concerns I'd mentioned earlier regarding the limited resources offered by the Raspberry Pi 3B, I knew that it was about to be run through its paces. I also wasn't particularly feeling like manually trying to monitor its progress over what would become a weeklong ordeal. Additionally, if the 3B wasn't going to meet the needs, I'd rather have been able to put the kibosh on this sooner rather than later so I could get back to the drawing board as quickly as possible.
+
+So before bringing the API calls "in-house" to the RPi, it was easiest to run the script from VSCode on my laptop, and have the script write to the MongoDB on the RPi. After running for a few minutes, the RPi seemed to be handling the process surprisingly well, recording over 24,000 bus position records in only a few minutes.
+
+But with that very first test out of the way, it was time to start getting the server warmed up.
 
 
 ---
 
 ## Part II: Release the ~~Hounds~~ ~~Kraken~~ API Calls!
 
-### Chapter 1: 1-hour Run
+### Chapter 0: Oh, right, the script!
+I forgot to talk about the script! More or less it's a small excerpt from the Flask App I'd set up for Metro Guru 1. It's written in Python3, and only comes in at only about 63 lines of code. It captures data from two of WMATA's API endpoints. Every 10 seconds it collects geospacial information and metadata on every bus in the system currently in service. Additionally, every 60 seconds, a seperate end-point is called to return any and all active alerts and notifications. All returned documents are time-stamped by WMATA, though an additional client-side time stamp is added for every document, so each API call can individually be identified later. Think of that timestamp as a frame that holds each picture together as a snapshot of the MetroBus system at any given time. The additional time stamp will become crucial down the road, but for now, it's just another data point. The API call functions are made regularly every few seconds, and due to network latency or the possibility of the RPi taking longer to write documents to the Database than it takes to collect them, threading was implemented to allow for multiple instances of the functions to run in parallel and not slow down the pace of collection every 10 seconds.
 
-### Chapter 2: Rush Hour with Jackie Chan
+---
+### Chapter 1: At Your Service
+
+At this point, I needed to get the script onto the RPi. My concept of this exercise involves the script collecting the API data into MongoDB every 10 seconds for a minimum of 168 consecutive hours. That in mind I needed to set the script to run as a service. Needing to not only continue running after logging out, but also capable of automatically restarting itself in the event of a critical failure or reboot. While these were not foreign concepts to me, configuring this to occur on a homebuilt Linux CLI server was a completely new excersize.
+
+Ultimately, the solution I landed on was to make the Python script executable, write a small bash script monitor, and then add the monitor script to be a cronjob, set to start immediately at boot. None of that steps involved in doing this was known to me at the outset of this project. I tested the functionality of this by simply unplugging the RPi from power. Plugging it back in saw the service restored within only a few minutes.
+
+---
+### Chapter 2: The Long Wait and See.
+
+At this point, having some automatic failure recovery baked in, the waiting game begins. At 10:30 pm on July 26th, I cleared the database and rebooted the server. Starting with more regular checks and then allowing the system to run overnight, I began logging the service's long-run performance statistics.
+
++ **Uptime: 3 minutes**  
+    Mem: 168/912M  
+    CPU: Minimal
 
