@@ -170,7 +170,23 @@ Ultimately, the solution I landed on was to make the Python script executable, w
 
 At this point, having some automatic failure recovery baked in, the waiting game begins. At 10:30 pm on July 26th, I cleared the database and rebooted the server. Starting with more regular checks and then allowing the system to run overnight, I began logging the service's long-run performance statistics.
 
-+ **Uptime: 3 minutes**  
-    Mem: 168/912M  
-    CPU: Minimal
+I ran progressively longer tests in succession. After running 1- and 12-hour tests, resource usage was found to be stable and the application appeared to run well. Having run the application for multiple-hour stints successfully, I began the first 7-day test. Between Saturday morning and Sunday night, the script collected just over 3 million records, which amounted to a bit over a gigabyte of data. The application appeared to be stable while running over multiple consecutive days, including morning and afternoon rush hours and by Wednesday I had collected over 15 million records. At this stage,it was apparent that I was collecting an immense amount of data, now I needed to figure out exactly what I was going to do with it all.
+
+---
+
+## Part III: Analytics and Visualizations
+
+### Chapter 0: The OG Metro Guru
+
+### Chapter 1: Start With One
+
+### Chapter 2: Then, Do A Thousand
+
+### Chapter 3: Bringing The Heat
+
+### Chapter 4: Winners and Losers
+
+
+
+
 
