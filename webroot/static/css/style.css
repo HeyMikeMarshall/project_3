@@ -1,0 +1,22 @@
+#map {
+    width: 100px;
+    height:500px;
+    min-height: 100%;
+    min-width: 100%;
+    display: block;
+}
+
+.selector {
+    width: 90%;
+}
+
+
+
+.bus-marker {
+    transition: all 3s;
+}
+
+.carousel {
+    width:640px;
+    height:360px;
+  }

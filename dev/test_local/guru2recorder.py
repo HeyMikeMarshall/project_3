@@ -13,7 +13,7 @@ routesurl = 'https://api.wmata.com/Bus.svc/json/jRoutes'
 
 
 def getStops():
-    client = MongoClient('mongodb://localhost:27017')
+    client = MongoClient('mongodb://rpisfc-02:27017')
     db = client['guru_db2']
     collection = db['stops']
     if len(list(db['stops'].find({}))) == 0:
@@ -29,7 +29,7 @@ def getStops():
     client.close()
 
 def getRoutes():
-    client = MongoClient('mongodb://localhost:27017')
+    client = MongoClient('mongodb://rpisfc-02:27017')
     db = client['guru_db2']
     db.routes.drop()
     acqTimeStamp = datetime.now().isoformat()[:-7]
@@ -63,7 +63,7 @@ def run_threaded(job_func):
 @catch_exceptions(cancel_on_failure=False)
 def getBuses():
     response = requests.get(busposurl, params=params).json()
-    client = MongoClient('mongodb://localhost:27017')
+    client = MongoClient('mongodb://rpisfc-02:27017')
     db = client['guru_db2']
     collection = db['buspos']
     acqTimeStamp = datetime.now().isoformat()[:-7]
@@ -76,7 +76,7 @@ def getBuses():
 @catch_exceptions(cancel_on_failure=False)
 def getBusIncidents():
     response = requests.get(busincurl, params=params).json()
-    client = MongoClient('mongodb://localhost:27017')
+    client = MongoClient('mongodb://rpisfc-02:27017')
     db = client['guru_db2']
     collection = db['businc']
     acqTimeStamp = datetime.now().isoformat()[:-7]
@@ -89,7 +89,7 @@ def getBusIncidents():
        
 def getSched():      
     def routeList():
-        client = MongoClient('mongodb://localhost:27017')
+        client = MongoClient('mongodb://rpisfc-02:27017')
         db = client['guru_db2']
         collection = db['routes']
         routes = list(collection.find({},{"RouteID":1, "_id":0}))
@@ -99,7 +99,7 @@ def getSched():
     def getOneSched(routeID):
         schedurl = 'https://api.wmata.com/Bus.svc/json/jRouteSchedule?'
         response = requests.get(schedurl + "RouteID=" + routeID, params=params).json()
-        client = MongoClient('mongodb://localhost:27017')
+        client = MongoClient('mongodb://rpisfc-02:27017')
         db = client['guru_db2']
         collection = db['sched']
         acqTimeStamp = datetime.now().isoformat()[:-7]
@@ -121,7 +121,7 @@ schedule.every(24).hours.do(run_threaded, getSched)
 schedule.every(1).minute.do(run_threaded, getBusIncidents)         
 schedule.every(10).seconds.do(run_threaded, getBuses)
 
-finish_time = datetime.now() + timedelta(hours=1)
+finish_time = datetime.now() + timedelta(days=7)
 while datetime.now() < finish_time:
     schedule.run_pending()
     time.sleep(1)
